@@ -60,14 +60,12 @@ app.use('/test', (req, res) => {
 
 // mongoose connection
 mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB connected"))
-  .catch((error) => console.log(error));
+  .then(() => console.log("Connected to MongoDB"))
+  .catch((err) => console.log(err));
 
-
-if (process.env.NODE_ENV !== "production") {
-  app.listen(process.env.PORT || 5000, () => {
-    console.log("Server is running locally");
-  });
+if (process.env.NODE_ENV !== 'production') {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => console.log(`Server running on port ${PORT} 🚀`));
 }
 
 module.exports = app;
