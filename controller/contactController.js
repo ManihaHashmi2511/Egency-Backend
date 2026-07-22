@@ -1,7 +1,6 @@
 const Contact = require('../model/contactModel');
 const sendContactNotification = require('../utils/sendEmail');
 
-// GET all contact messages (newest first) - Admin Panel ke liye
 const getAllContacts = async (req, res) => {
     try {
         const contacts = await Contact.find().sort({ createdAt: -1 });
@@ -11,13 +10,21 @@ const getAllContacts = async (req, res) => {
     }
 }
 
-// POST create a new contact message - user submit karega
 const createContact = async (req, res) => {
     try {
         const { name, email, phone, message } = req.body;
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            return res.status(400).json({ message: "Please provide a valid email address" });
+        }
+
+        if (!phone || phone.replace(/\D/g, "").length < 10) {
+            return res.status(400).json({ message: "Please provide a valid phone number" });
+        }
+
         const contact = await Contact.create({ name, email, phone, message });
 
-        // Email bhejne ki koshish karo - agar ye fail bhi ho jaye, form submission successful hi rahega
         try {
             await sendContactNotification({ name, email, phone, message });
         } catch (emailError) {
@@ -28,11 +35,9 @@ const createContact = async (req, res) => {
 
     } catch (error) {
         res.status(500).json({ message: "Server error", error: error.message });
-
     }
 }
 
-// PUT update contact (mark as read) - Admin Panel ke liye
 const updateContact = async (req, res) => {
     try {
         const { id } = req.params;
@@ -46,7 +51,6 @@ const updateContact = async (req, res) => {
     }
 }
 
-// DELETE a contact message - Admin Panel ke liye
 const deleteContact = async (req, res) => {
     try {
         const { id } = req.params;

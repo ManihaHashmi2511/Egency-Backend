@@ -66,6 +66,10 @@ const portfolioSchema = new mongoose.Schema(
         },
       },
     ],
+    industries: {
+      type: [String],
+      default: [],
+    },
     order: {
       type: Number, 
       required: false,

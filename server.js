@@ -14,6 +14,7 @@ const caseStudyRouter = require("./routes/caseStudyRoute");
 const contactRouter = require("./routes/contactRoute");
 const whatWeDoRouter = require("./routes/whatWeDoRoute");
 const uploadRouter = require("./routes/uploadRoute");
+const comingSoonRouter = require("./routes/comingSoonRoutes");
 
 const app = express();
 
@@ -50,6 +51,10 @@ app.use('/api/contact', contactRouter);
 
 //what we do route
 app.use('/api/what-we-do', whatWeDoRouter);
+
+//coming soon route
+app.use('/api/coming-soon', comingSoonRouter);
+
 
 //upload route
 app.use('/api/upload', uploadRouter);
