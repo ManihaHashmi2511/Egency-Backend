@@ -1,4 +1,5 @@
 const Testimonial = require('../model/testimonialModel');
+const logActivity = require('../utils/logActivity');
 
 const getAllTestimonials = async (req, res) => {
     try {
@@ -13,6 +14,7 @@ const createTestimonial = async (req, res) => {
     try {
         const { name, country, rating, review, image } = req.body;
         const testimonial = await Testimonial.create({ name, country, rating, review, image });
+        await logActivity({ req, action: "created", module: "testimonials", description: `Added testimonial from ${req.body.name}` });
         res.status(201).json({ message: "Testimonial created successfully", testimonial });
         
     } catch (error) {
@@ -29,6 +31,7 @@ const updateTestimonial = async (req, res) => {
         if (!update) {
             return res.status(404).json({ message: "Testimonial not found" });
         }
+        await logActivity({ req, action: "updated", module: "testimonials", description: `Updated testimonial from ${req.body.name}` });
         res.status(200).json({ message: "Testimonial updated successfully", update });
         
     } catch (error) {
@@ -44,6 +47,7 @@ const deleteTestimonial = async (req, res) => {
         if (!deleted) {
             return res.status(404).json({ message: "Testimonial not found" });
         }
+        await logActivity({ req, action: "deleted", module: "testimonials", description: `Deleted testimonial from ${deleted.name}` });
         res.status(200).json({ message: "Testimonial deleted successfully" });
         
     } catch (error) {

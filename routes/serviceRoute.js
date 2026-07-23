@@ -5,6 +5,8 @@ const {
   updateService,
   deleteService,
 } = require("../controller/servicesController");
+const { protect } = require("../middleware/userAuth");
+
 
 const serviceRouter = express.Router();
 
@@ -12,12 +14,12 @@ const serviceRouter = express.Router();
 serviceRouter.get("/", getAllServices);
 
 // POST → new service add
-serviceRouter.post("/", createService);
+serviceRouter.post("/", protect, createService);
 
 // PUT  → service update (order change karne ke liye bhi yehi use hoga)
-serviceRouter.put("/:id", updateService);
+serviceRouter.put("/:id", protect, updateService);
 
 // DELETE → service delete
-serviceRouter.delete("/:id", deleteService);
+serviceRouter.delete("/:id", protect, deleteService);
 
 module.exports = serviceRouter;

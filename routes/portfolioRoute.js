@@ -6,6 +6,8 @@ const {
   updatePortfolio,
   deletePortfolio,
 } = require("../controller/portfolioController");
+const { protect } = require("../middleware/userAuth");
+
 
 const portfolioRouter = express.Router();
 
@@ -16,12 +18,12 @@ portfolioRouter.get("/", getAllPortfolios);
 portfolioRouter.get("/:id", getPortfolioById);
 
 // POST → new portfolio add
-portfolioRouter.post("/", createPortfolio);
+portfolioRouter.post("/", protect, createPortfolio);
 
 // PUT  → portfolio update
-portfolioRouter.put("/:id", updatePortfolio);
+portfolioRouter.put("/:id", protect, updatePortfolio);
 
 // DELETE → portfolio delete
-portfolioRouter.delete("/:id", deletePortfolio);
+portfolioRouter.delete("/:id", protect, deletePortfolio);
 
 module.exports = portfolioRouter;

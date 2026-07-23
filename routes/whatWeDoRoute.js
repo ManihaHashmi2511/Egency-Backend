@@ -5,6 +5,8 @@ const {
   updateWhatWeDo,
   deleteWhatWeDo,
 } = require("../controller/whatWeDoController");
+const { protect } = require("../middleware/userAuth");
+
 
 const whatWeDoRouter = express.Router();
 
@@ -12,12 +14,12 @@ const whatWeDoRouter = express.Router();
 whatWeDoRouter.get("/", getAllWhatWeDo);
 
 // POST → new card add
-whatWeDoRouter.post("/", createWhatWeDo);
+whatWeDoRouter.post("/", protect, createWhatWeDo);
 
 // PUT  → card update (order change karne ke liye bhi yehi use hoga)
-whatWeDoRouter.put("/:id", updateWhatWeDo);
+whatWeDoRouter.put("/:id", protect, updateWhatWeDo);
 
 // DELETE → card delete
-whatWeDoRouter.delete("/:id", deleteWhatWeDo);
+whatWeDoRouter.delete("/:id", protect, deleteWhatWeDo);
 
 module.exports = whatWeDoRouter;

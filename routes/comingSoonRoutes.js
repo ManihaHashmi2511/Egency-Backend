@@ -5,12 +5,14 @@ const {
     updateBanner,
     deleteBanner,
 } = require("../controller/comingSoonController");
+const { protect } = require("../middleware/userAuth");
+
 
 const comingSoonRouter = express.Router();
 
 comingSoonRouter.get("/", getAllBanners);
-comingSoonRouter.post("/", createBanner);
-comingSoonRouter.put("/:id", updateBanner);
-comingSoonRouter.delete("/:id", deleteBanner);
+comingSoonRouter.post("/", protect, createBanner);
+comingSoonRouter.put("/:id", protect, updateBanner);
+comingSoonRouter.delete("/:id", protect, deleteBanner);
 
 module.exports = comingSoonRouter;

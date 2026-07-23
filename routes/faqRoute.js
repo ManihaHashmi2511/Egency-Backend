@@ -5,6 +5,8 @@ const {
   updateFAQ,
   deleteFAQ,
 } = require("../controller/faqController");
+const { protect } = require("../middleware/userAuth");
+
 
 const faqRouter = express.Router();
 
@@ -12,12 +14,12 @@ const faqRouter = express.Router();
 faqRouter.get("/", getAllFAQs);
 
 // POST → new FAQ add
-faqRouter.post("/", createFAQ);
+faqRouter.post("/", protect, createFAQ);
 
 // PUT  → FAQ update
-faqRouter.put("/:id", updateFAQ);
+faqRouter.put("/:id", protect, updateFAQ);
 
 // DELETE → FAQ delete
-faqRouter.delete("/:id", deleteFAQ);
+faqRouter.delete("/:id", protect, deleteFAQ);
 
 module.exports = faqRouter;

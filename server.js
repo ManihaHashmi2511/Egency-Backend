@@ -15,6 +15,7 @@ const contactRouter = require("./routes/contactRoute");
 const whatWeDoRouter = require("./routes/whatWeDoRoute");
 const uploadRouter = require("./routes/uploadRoute");
 const comingSoonRouter = require("./routes/comingSoonRoutes");
+const activityLogRouter = require("./routes/activityLogRoute");
 
 const app = express();
 
@@ -54,6 +55,10 @@ app.use('/api/what-we-do', whatWeDoRouter);
 
 //coming soon route
 app.use('/api/coming-soon', comingSoonRouter);
+
+//activity log route
+app.use('/api/activity-logs', activityLogRouter);
+
 
 
 //upload route

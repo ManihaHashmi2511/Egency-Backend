@@ -1,4 +1,5 @@
 const FAQ = require('../model/faqModel');
+const logActivity = require('../utils/logActivity');
 
 // GET all FAQs
 const getAllFAQs = async (req, res) => {
@@ -15,6 +16,7 @@ const createFAQ = async (req, res) => {
     try {
         const { question, answer } = req.body;
         const faq = await FAQ.create({ question, answer });
+        await logActivity({ req, action: "created", module: "faqs", description: `Added a new FAQ: "${req.body.question}"` });
         res.status(201).json({ message: "FAQ created successfully", faq });
 
     } catch (error) {
@@ -32,6 +34,7 @@ const updateFAQ = async (req, res) => {
         if (!update) {
             return res.status(404).json({ message: "FAQ not found" });
         }
+        await logActivity({ req, action: "updated", module: "faqs", description: `Updated FAQ: "${req.body.question}"` });
         res.status(200).json({ message: "FAQ updated successfully", update });
 
     } catch (error) {
@@ -48,6 +51,7 @@ const deleteFAQ = async (req, res) => {
         if (!deleted) {
             return res.status(404).json({ message: "FAQ not found" });
         }
+        await logActivity({ req, action: "deleted", module: "faqs", description: `Deleted FAQ: "${deleted.question}"` });
         res.status(200).json({ message: "FAQ deleted successfully" });
 
     } catch (error) {

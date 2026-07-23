@@ -6,6 +6,8 @@ const {
   updateBlog,
   deleteBlog,
 } = require("../controller/blogController");
+const { protect } = require("../middleware/userAuth");
+
 
 const blogRouter = express.Router();
 
@@ -13,15 +15,15 @@ const blogRouter = express.Router();
 blogRouter.get("/", getAllBlogs);
 
 // GET  → fetch single blog by ID
-blogRouter.get("/:id", getBlogById);
+blogRouter.get("/:id", protect, getBlogById);
 
 // POST → new blog add
-blogRouter.post("/", createBlog);
+blogRouter.post("/",  protect, createBlog);
 
 // PUT  → blog update
-blogRouter.put("/:id", updateBlog);
+blogRouter.put("/:id",  protect, updateBlog);
 
 // DELETE → blog delete
-blogRouter.delete("/:id", deleteBlog);
+blogRouter.delete("/:id",  protect, deleteBlog);
 
 module.exports = blogRouter;

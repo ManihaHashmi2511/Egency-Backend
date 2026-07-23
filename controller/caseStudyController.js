@@ -1,4 +1,5 @@
 const CaseStudy = require('../model/caseStudyModel');
+const logActivity = require('../utils/logActivity');
 
 // GET all case studies (order ke hisaab se sorted)
 const getAllCaseStudies = async (req, res) => {
@@ -29,6 +30,7 @@ const createCaseStudy = async (req, res) => {
     try {
         const { title, category, desc, about, image, gallery, client, duration, result, services, order } = req.body;
         const caseStudy = await CaseStudy.create({ title, category, desc, about, image, gallery, client, duration, result, services, order });
+        await logActivity({ req, action: "created", module: "casestudies", description: `Added case study "${req.body.title}"` });
         res.status(201).json({ message: "Case study created successfully", caseStudy });
 
     } catch (error) {
@@ -46,6 +48,7 @@ const updateCaseStudy = async (req, res) => {
         if (!update) {
             return res.status(404).json({ message: "Case study not found" });
         }
+        await logActivity({ req, action: "updated", module: "casestudies", description: `Updated case study "${req.body.title}"` });
         res.status(200).json({ message: "Case study updated successfully", update });
 
     } catch (error) {
@@ -62,6 +65,7 @@ const deleteCaseStudy = async (req, res) => {
         if (!deleted) {
             return res.status(404).json({ message: "Case study not found" });
         }
+        await logActivity({ req, action: "deleted", module: "casestudies", description: `Deleted case study "${deleted.title}"` });
         res.status(200).json({ message: "Case study deleted successfully" });
 
     } catch (error) {

@@ -1,4 +1,5 @@
 const WhatWeDo = require('../model/whatWeDoModel');
+const logActivity = require('../utils/logActivity');
 
 // GET all cards (order ke hisaab se sorted)
 const getAllWhatWeDo = async (req, res) => {
@@ -15,6 +16,7 @@ const createWhatWeDo = async (req, res) => {
     try {
         const { title, desc, image, order } = req.body;
         const card = await WhatWeDo.create({ title, desc, image, order });
+        await logActivity({ req, action: "created", module: "whatwedo", description: `Added card "${req.body.title}"` });
         res.status(201).json({ message: "Card created successfully", card });
 
     } catch (error) {
@@ -32,6 +34,7 @@ const updateWhatWeDo = async (req, res) => {
         if (!update) {
             return res.status(404).json({ message: "Card not found" });
         }
+        await logActivity({ req, action: "updated", module: "whatwedo", description: `Updated card "${req.body.title}"` });
         res.status(200).json({ message: "Card updated successfully", update });
 
     } catch (error) {
@@ -48,6 +51,7 @@ const deleteWhatWeDo = async (req, res) => {
         if (!deleted) {
             return res.status(404).json({ message: "Card not found" });
         }
+        await logActivity({ req, action: "deleted", module: "whatwedo", description: `Deleted card "${deleted.title}"` });
         res.status(200).json({ message: "Card deleted successfully" });
 
     } catch (error) {

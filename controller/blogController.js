@@ -1,4 +1,5 @@
 const Blog = require('../model/blogModel');
+const logActivity = require('../utils/logActivity');
 
 // GET all blogs (newest first)
 const getAllBlogs = async (req, res) => {
@@ -29,6 +30,7 @@ const createBlog = async (req, res) => {
     try {
         const { title, desc, image, author, authorImg, authorRole, category, tags, readTime, date, featured, content } = req.body;
         const blog = await Blog.create({ title, desc, image, author, authorImg, authorRole, category, tags, readTime, date, featured, content });
+        await logActivity({ req, action: "created", module: "blog", description: `Published blog "${req.body.title}"` });
         res.status(201).json({ message: "Blog created successfully", blog });
 
     } catch (error) {
@@ -46,6 +48,7 @@ const updateBlog = async (req, res) => {
         if (!update) {
             return res.status(404).json({ message: "Blog not found" });
         }
+        await logActivity({ req, action: "updated", module: "blog", description: `Updated blog "${req.body.title}"` });
         res.status(200).json({ message: "Blog updated successfully", update });
 
     } catch (error) {
@@ -62,6 +65,7 @@ const deleteBlog = async (req, res) => {
         if (!deleted) {
             return res.status(404).json({ message: "Blog not found" });
         }
+        await logActivity({ req, action: "deleted", module: "blog", description: `Deleted blog "${deleted.title}"` });
         res.status(200).json({ message: "Blog deleted successfully" });
 
     } catch (error) {

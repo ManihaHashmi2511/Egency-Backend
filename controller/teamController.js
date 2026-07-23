@@ -1,4 +1,5 @@
 const Team = require('../model/teamModel');
+const logActivity = require('../utils/logActivity');
 
 // GET-- fetch all team members
 const getAllTeamMembers = async (req, res) => {
@@ -16,6 +17,7 @@ const createTeamMember = async (req, res) => {
     try {
         const { name, role, image, linkedin } = req.body;
         const member = await Team.create({ name, role, image, linkedin });
+        await logActivity({ req, action: "created", module: "team", description: `Added team member "${req.body.name}"` });
         res.status(201).json({ message: "Team member created successfully", member });
     } 
     catch (error) {
@@ -33,6 +35,7 @@ const updateTeamMember = async (req, res) => {
         if (!update) {
             return res.status(404).json({ message: "Team member not found" });
         }
+        await logActivity({ req, action: "updated", module: "team", description: `Updated team member "${req.body.name}"` });
         res.status(200).json({ message: "Team member updated successfully", update });
 
     } catch (error) {
@@ -49,6 +52,7 @@ const deleteTeamMember = async (req, res) => {
         if (!deleted) {
             return res.status(404).json({ message: "Team member not found" });
         }
+        await logActivity({ req, action: "deleted", module: "team", description: `Deleted team member "${deleted.name}"` });
         res.status(200).json({ message: "Team member deleted successfully" });
 
     } 

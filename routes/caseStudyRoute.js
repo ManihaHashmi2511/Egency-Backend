@@ -6,6 +6,8 @@ const {
   updateCaseStudy,
   deleteCaseStudy,
 } = require("../controller/caseStudyController");
+const { protect } = require("../middleware/userAuth");
+
 
 const caseStudyRouter = express.Router();
 
@@ -16,12 +18,12 @@ caseStudyRouter.get("/", getAllCaseStudies);
 caseStudyRouter.get("/:id", getCaseStudyById);
 
 // POST → new case study add
-caseStudyRouter.post("/", createCaseStudy);
+caseStudyRouter.post("/", protect, createCaseStudy);
 
 // PUT  → case study update
-caseStudyRouter.put("/:id", updateCaseStudy);
+caseStudyRouter.put("/:id", protect,  updateCaseStudy);
 
 // DELETE → case study delete
-caseStudyRouter.delete("/:id", deleteCaseStudy);
+caseStudyRouter.delete("/:id", protect, deleteCaseStudy);
 
 module.exports = caseStudyRouter;

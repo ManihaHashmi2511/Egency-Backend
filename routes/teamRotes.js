@@ -5,6 +5,8 @@ const {
   updateTeamMember,
   deleteTeamMember,
 } = require("../controller/teamController");
+const { protect } = require("../middleware/userAuth");
+
 
 const teamRouter = express.Router();
 
@@ -12,12 +14,12 @@ const teamRouter = express.Router();
 teamRouter.get("/", getAllTeamMembers);
 
 // POST → new team member add
-teamRouter.post("/", createTeamMember);
+teamRouter.post("/", protect, createTeamMember);
 
 // PUT  → team member update
-teamRouter.put("/:id", updateTeamMember);
+teamRouter.put("/:id", protect,  updateTeamMember);
 
 // DELETE → team member delete
-teamRouter.delete("/:id", deleteTeamMember);
+teamRouter.delete("/:id", protect, deleteTeamMember);
 
 module.exports = teamRouter;

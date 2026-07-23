@@ -1,4 +1,5 @@
 const Portfolio = require('../model/portfolioModel');
+const logActivity = require('../utils/logActivity');
 
 // GET all portfolios (order ke hisaab se sorted)
 const getAllPortfolios = async (req, res) => {
@@ -29,6 +30,7 @@ const createPortfolio = async (req, res) => {
     try {
         const { title, category, image, client, tools, duration, year, liveUrl, githubUrl, challenge, solution, gallery, results, order } = req.body;
         const portfolio = await Portfolio.create({ title, category, image, client, tools, duration, year, liveUrl, githubUrl, challenge, solution, gallery, results, order });
+        await logActivity({ req, action: "created", module: "portfolio", description: `Added project "${req.body.title}"` });
         res.status(201).json({ message: "Portfolio created successfully", portfolio });
 
     } catch (error) {
@@ -46,6 +48,7 @@ const updatePortfolio = async (req, res) => {
         if (!update) {
             return res.status(404).json({ message: "Portfolio not found" });
         }
+        await logActivity({ req, action: "updated", module: "portfolio", description: `Updated project "${req.body.title}"` });
         res.status(200).json({ message: "Portfolio updated successfully", update });
 
     } catch (error) {
@@ -62,6 +65,7 @@ const deletePortfolio = async (req, res) => {
         if (!deleted) {
             return res.status(404).json({ message: "Portfolio not found" });
         }
+        await logActivity({ req, action: "deleted", module: "portfolio", description: `Deleted project "${deleted.title}"` });
         res.status(200).json({ message: "Portfolio deleted successfully" });
 
     } catch (error) {

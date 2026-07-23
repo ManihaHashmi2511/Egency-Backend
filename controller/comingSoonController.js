@@ -1,4 +1,5 @@
 const ComingSoon = require('../model/comingSoonModel');
+const logActivity = require('../utils/logActivity');
 
 const getAllBanners = async (req, res) => {
     try {
@@ -11,12 +12,12 @@ const getAllBanners = async (req, res) => {
 
 const createBanner = async (req, res) => {
     try {
-        // Agar naya banner "active" set kiya jaye, to baaki sab automatically inactive ho jate hain
-        // (ek waqt mein sirf ek hi banner live rehna chahiye)
+        
         if (req.body.isActive) {
             await ComingSoon.updateMany({}, { isActive: false });
         }
         const banner = await ComingSoon.create(req.body);
+        await logActivity({ req, action: "created", module: "comingsoon", description: `Created banner "${req.body.highlightText}"` });
         res.status(201).json(banner);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -35,6 +36,7 @@ const updateBanner = async (req, res) => {
         if (!updated) {
             return res.status(404).json({ message: "Banner not found" });
         }
+        await logActivity({ req, action: "updated", module: "comingsoon", description: `Updated banner "${updated.highlightText}"` });
         res.status(200).json(updated);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -48,6 +50,7 @@ const deleteBanner = async (req, res) => {
         if (!deleted) {
             return res.status(404).json({ message: "Banner not found" });
         }
+        await logActivity({ req, action: "deleted", module: "comingsoon", description: `Deleted banner "${deleted.highlightText}"` });
         res.status(200).json({ message: "Banner deleted successfully" });
     } catch (error) {
         res.status(500).json({ message: error.message });

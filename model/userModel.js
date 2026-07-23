@@ -27,13 +27,17 @@ const userSchema = new mongoose.Schema(
       default: "user",
     },
     permissions: {
-      type: [String], // jaise ["dashboard", "blog", "portfolio", "contact"]
+      type: [String],
       default: [],
     },
     status: {
       type: String,
       enum: ["online", "offline"],
       default: "offline",
+    },
+    profileImg: {
+      type: String,
+      default: "",
     },
   },
   { timestamps: true },
