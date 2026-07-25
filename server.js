@@ -15,7 +15,7 @@ const caseStudyRouter = require("./routes/caseStudyRoute");
 const contactRouter = require("./routes/contactRoute");
 const whatWeDoRouter = require("./routes/whatWeDoRoute");
 const uploadRouter = require("./routes/uploadRoute");
-const comingSoonRouter = require("./routes/comingSoonRoute");
+const comingSoonRouter = require("./routes/comingSoonRoutes");
 const activityLogRouter = require("./routes/activityLogRoute");
 
 const app = express();
