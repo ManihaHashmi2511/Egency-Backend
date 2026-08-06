@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const User = require("../model/userModel");
 
-// Step 1: Check karo user logged in hai (valid token hai)
+// check if user is authenticated
 const protect = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
@@ -14,7 +14,6 @@ const protect = async (req, res, next) => {
     
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // Token se user nikal ke request mein attach kar do (password chhod ke)
     const user = await User.findById(decoded.id).select("-password");
 
     if (!user) {
@@ -29,8 +28,7 @@ const protect = async (req, res, next) => {
   }
 };
 
-// Step 2: Check karo user ke paas is action ki permission hai
-// allowedRoles jaise ["superadmin"] ya ["superadmin", "admin"]
+
 const authorize = (...allowedRoles) => {
   return (req, res, next) => {
     if (!req.user) {
@@ -45,15 +43,13 @@ const authorize = (...allowedRoles) => {
   };
 };
 
-// Step 3: Check karo user ke paas specific module ka access hai
-// Super Admin ko hamesha sab kuch milega, baaki roles ke liye permissions array check hoga
 const checkModuleAccess = (moduleName) => {
   return (req, res, next) => {
     if (!req.user) {
       return res.status(401).json({ message: "Not authorized" });
     }
 
-    // Super Admin ko har module ka access hai, koi check nahi
+    
     if (req.user.role === "superadmin") {
       return next();
     }

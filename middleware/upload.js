@@ -2,7 +2,7 @@ const multer = require("multer");
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const cloudinary = require("../config/cloudinary");
 
-// Multer ki storage engine seedha Cloudinary pe upload karti hai, local disk pe kuch save nahi hota
+// Multer's storage engine configuration
 const storage = new CloudinaryStorage({
   cloudinary,
   params: {

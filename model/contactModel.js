@@ -19,7 +19,7 @@ const contactSchema = new mongoose.Schema(
       required: true,
     },
     isRead: {
-      type: Boolean, // Admin Panel mein "naya/purana" track karne ke liye
+      type: Boolean, // Admin Panel mein "naya/purana" message track karne ke liye
       default: false,
     },
   },

@@ -8,7 +8,6 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-// Contact form submit hote hi tumhare Gmail pe email jayega
 const sendContactNotification = async ({ name, email, phone, message }) => {
   await transporter.sendMail({
     from: `"Egency Digital" <${process.env.EMAIL_USER}>`,
